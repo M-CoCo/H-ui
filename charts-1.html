@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>水环境质量</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 统计分析 <span class="c-gray en">&gt;</span> 水环境质量 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<!--水环境月达标天数-->
+<div class="page-container">
+	<div id="container" style="min-width:700px;height:400px"></div>
+</div>
+<!--水环境每日达标站点个数-->
+<div id="container2" style=" min-width:700px;height: 300px; margin-top: 5%"></div>
+<!--考核断面水质类型占比-->
+<div id="main" style=" width:800px;height: 500px; margin-top: 5%"></div>
+<!--水环境优良率占比-->
+<div id="main1" style=" width:1000px;height: 500px; float:right;margin-top: -27%"></div>
+
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/hcharts/Highcharts/5.0.6/js/highcharts.js"></script>
+<script type="text/javascript" src="lib/hcharts/Highcharts/5.0.6/js/modules/exporting.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+<script type="text/javascript">
+var chartDom = document.getElementById('container');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+	title: {
+		text: '水环境月达标天数统计',
+		left: 'center'
+	},
+	tooltip: {
+		trigger: 'axis'
+	},
+	legend: {
+		top:40,
+		data: ['乌毛计', '五排干中断', '七排干入总排干口', '八排干入乌梁素海口']
+	},
+	grid: {
+		left: '3%',
+		right: '4%',
+		bottom: '3%',
+		containLabel: true
+	},
+	toolbox: {
+		feature: {
+			saveAsImage: {}
+		}
+	},
+	xAxis: {
+		type: 'category',
+		boundaryGap: false,
+		data: ['一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月']
+	},
+	yAxis: {
+		type: 'value'
+	},
+	series: [
+		{
+			name: '乌毛计',
+			type: 'line',
+			stack: '总量',
+			color:'#5470c6',
+			data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
+		},
+		{
+			name: '五排干中断',
+			type: 'line',
+			stack: '总量',
+			color:'#91cc75',
+			data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+		},
+		{
+			name: '七排干入总排干口',
+			type: 'line',
+			stack: '总量',
+			color:'#fac858',
+			data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
+		},
+		{
+			name: '八排干入乌梁素海口',
+			type: 'line',
+			stack: '总量',
+			color:'#ee6666',
+			data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
+		}
+	]
+};
+
+option && myChart.setOption(option);
+
+var dom = document.getElementById("container2");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+app.title = '水环境每日达标站点个数';
+var namedate = ['2021-3-12', '2021-3-13', '2021-3-14', '2021-3-15', '2021-3-16', '2021-3-17', '2021-3-18', '2021-3-19', '2021-3-20', '2021-3-21', '2021-3-22'];
+var numdate = [5, 7, 6, 7, 12, 2, 1,1,2,11,1];
+var colorlist = [];
+numdate.forEach(element => {
+	if (element < 5) {
+		colorlist.push(["#fc7095", "#fa8466"])
+	} else if (element >= 5 && element < 10) {
+		colorlist.push(["#386ffd", "#74b3ff"])
+	} else {
+		colorlist.push(["#1aa8ce", "#49d3c6"])
+	}
+});
+option = {
+	title: {
+		text: '水环境每日达标站点个数',
+		left: 'center'
+	},
+	tooltip: {
+		trigger: 'axis',
+		axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+			type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		}
+	},
+	grid: {
+		left: '3%',
+		right: '4%',
+		bottom: '3%',
+		containLabel: true
+	},
+	xAxis: [
+		{
+			type: 'category',
+			data: namedate,
+			axisTick: {
+				alignWithLabel: true
+			},
+			axisLine: {
+				lineStyle: {
+					color: "#4dd1c4",
+					width: 1
+				}
+			},
+			axisLabel: {
+				show: true,
+				textStyle: {
+					color: '#999'
+				}
+			}
+		}
+	],
+	yAxis: [
+		{
+
+			type: 'value',
+			axisLabel: {
+				formatter: '{value} 个',
+				show: true,
+				textStyle: {
+					color: '#999'
+				}
+			},
+			axisLine: {
+				lineStyle: {
+					color: "#4dd1c4",
+					width: 1
+				}
+			},
+			splitLine: {
+				show: true,
+				lineStyle: {
+					type: 'dashed',
+					color: '#ddd'
+				}
+			}
+
+		}
+	],
+	series: [
+		{
+			name: '站点数量',
+			type: 'bar',
+			barWidth: '50%',
+			data: numdate,
+			itemStyle: {
+				normal: {
+					// color: new echarts.graphic.LinearGradient(
+					//     0, 0, 0, 1,
+					//     [
+					//         {offset: 1, color: 'red'},
+					//         {offset: 0, color: 'orange'}
+					//     ]
+					// )
+					color: function (params) {
+						// var colorList = colorlist;
+						// return colorList[params.dataIndex];
+						var colorList = colorlist
+
+						var index = params.dataIndex;
+						// if(params.dataIndex >= colorList.length){
+						//         index=params.dataIndex-colorList.length;
+						// }
+						return new echarts.graphic.LinearGradient(0, 0, 0, 1,
+								[
+									{ offset: 1, color: colorList[index][0] },
+									{ offset: 0, color: colorList[index][1] }
+								]);
+
+
+					}
+				}
+			}
+		}
+	]
+};
+if (option && typeof option === "object") {
+	myChart.setOption(option, true);
+}
+
+
+
+var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+	title: {
+		text: '考核断面水质类型占比',
+		left: 'center'
+	},
+	tooltip: {
+		trigger: 'item'
+	},
+	legend: {
+		orient: 'vertical',
+		left: '100',
+	},
+	series: [
+		{
+			name: '水质类型',
+			type: 'pie',
+			radius: '50%',
+			data: [
+				{value: 3, name: 'Ⅰ-Ⅲ类',itemStyle: {
+						color: '#64C601'
+					}},
+				{value: 15, name: 'Ⅴ类',itemStyle: {
+						color: '#FFCA00'
+					}},
+
+			],
+			emphasis: {
+				itemStyle: {
+					shadowBlur: 10,
+					shadowOffsetX: 0,
+					shadowColor: 'rgba(0, 0, 0, 0.5)'
+				}
+			}
+		}
+	]
+};
+option && myChart.setOption(option);
+
+
+
+
+var dom = document.getElementById("main1");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+app.title = '水环境优良率占比';
+var namedate = ['2021-03', '2021-04', '2021-05', '2021-06', '2021-07', '2021-08', '2021-09', '2021-10', '2021-11', '2021-12'];
+var numdate = [67, 50, 47, 28, 40,46, 51,65,35,29];
+var colorlist = [];
+numdate.forEach(element => {
+	if (element < 5) {
+		colorlist.push(["#fc7095", "#fa8466"])
+	} else if (element >= 5 && element < 10) {
+		colorlist.push(["#386ffd", "#74b3ff"])
+	} else {
+		colorlist.push(["#1aa8ce", "#49d3c6"])
+	}
+});
+option = {
+	title: {
+		text: '水环境优良率占比',
+		left: 'center'
+	},
+	tooltip: {
+		trigger: 'axis',
+		axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+			type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		}
+	},
+	grid: {
+		left: '3%',
+		right: '4%',
+		bottom: '3%',
+		containLabel: true
+	},
+	xAxis: [
+		{
+			type: 'category',
+			data: namedate,
+			axisTick: {
+				alignWithLabel: true
+			},
+			axisLine: {
+				lineStyle: {
+					color: "#4dd1c4",
+					width: 1
+				}
+			},
+			axisLabel: {
+				show: true,
+				textStyle: {
+					color: '#999'
+				}
+			}
+		}
+	],
+	yAxis: [
+		{
+
+			type: 'value',
+			axisLabel: {
+				formatter: '{value} %',
+				show: true,
+				textStyle: {
+					color: '#999'
+				}
+			},
+			axisLine: {
+				lineStyle: {
+					color: "#4dd1c4",
+					width: 1
+				}
+			},
+			splitLine: {
+				show: true,
+				lineStyle: {
+					type: 'dashed',
+					color: '#ddd'
+				}
+			}
+
+		}
+	],
+	series: [
+		{
+			name: '站点数量',
+			type: 'bar',
+			barWidth: '50%',
+			data: numdate,
+			itemStyle: {
+				normal: {
+					// color: new echarts.graphic.LinearGradient(
+					//     0, 0, 0, 1,
+					//     [
+					//         {offset: 1, color: 'red'},
+					//         {offset: 0, color: 'orange'}
+					//     ]
+					// )
+					color: function (params) {
+						// var colorList = colorlist;
+						// return colorList[params.dataIndex];
+						var colorList = colorlist
+
+						var index = params.dataIndex;
+						// if(params.dataIndex >= colorList.length){
+						//         index=params.dataIndex-colorList.length;
+						// }
+						return new echarts.graphic.LinearGradient(0, 0, 0, 1,
+								[
+									{ offset: 1, color: colorList[index][0] },
+									{ offset: 0, color: colorList[index][1] }
+								]);
+
+
+					}
+				}
+			}
+		}
+	]
+};
+if (option && typeof option === "object") {
+	myChart.setOption(option, true);
+}
+</script>
+
+</body>
+</html>
